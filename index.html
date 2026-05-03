@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="sw" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MWOMBEKI INTERNATIONAL COMPANY</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --gold-dark: #8a6c2a;
+    --bg: #0a0a0f;
+    --bg2: #12121a;
+    --bg3: #1a1a28;
+    --text: #f0ede6;
+    --text-muted: #a09880;
+    --accent: #e63560;
+    --card-bg: rgba(20,20,35,0.85);
+    --border: rgba(201,168,76,0.25);
+    --shadow: 0 8px 40px rgba(0,0,0,0.6);
+    --transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+  }
+  [data-theme="light"] {
+    --bg: #f5f0e8;
+    --bg2: #ede7d8;
+    --bg3: #e0d8c5;
+    --text: #1a1510;
+    --text-muted: #6b5c3a;
+    --card-bg: rgba(255,250,240,0.92);
+    --border: rgba(140,100,30,0.25);
+    --shadow: 0 8px 40px rgba(100,80,20,0.15);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+  .cursor { width:12px; height:12px; background:var(--gold); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width 0.2s,height 0.2s,background 0.2s; }
+  .cursor-follow { width:36px; height:36px; border:1.5px solid var(--gold); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; opacity:0.5; }
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:2px; }
+  nav {
+    position: fixed; top:0; left:0; width:100%; z-index:1000;
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 70px;
+    background: rgba(10,10,15,0.82);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition);
+  }
+  [data-theme="light"] nav { background: rgba(245,240,232,0.88); }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo span { color: var(--text); font-size:0.8rem; letter-spacing:2px; font-family:'Cormorant Garamond',serif; font-weight:300; margin-left:4px; }
+  .nav-links { display:flex; gap:36px; list-style:none; }
+  .nav-links a {
+    color: var(--text-muted); text-decoration:none;
+    font-family:'Cormorant Garamond',serif; font-size:1rem; letter-spacing:2px;
+    text-transform:uppercase; position:relative; transition:color 0.3s;
+  }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px;
+    background:var(--gold); transition:width 0.3s;
+  }
+  .nav-links a:hover { color:var(--gold); }
+  .nav-links a:hover::after { width:100%; }
+  .nav-right { display:flex; align-items:center; gap:14px; }
+  .theme-toggle {
+    background:none; border:1px solid var(--border); color:var(--gold);
+    width:38px; height:38px; border-radius:50%; cursor:none; font-size:1rem;
+    transition:var(--transition); display:flex; align-items:center; justify-content:center;
+  }
+  .theme-toggle:hover { background:var(--gold); color:#000; }
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:none; background:none; border:none; padding:4px; }
+  .hamburger span { width:26px; height:2px; background:var(--gold); transition:var(--transition); display:block; }
+  .hero {
+    min-height: 100vh; position:relative; display:flex; align-items:center;
+    overflow: hidden; padding-top:70px;
+  }
+  .hero-bg {
+    position:absolute; inset:0;
+    background: linear-gradient(135deg, #050508 0%, #0f0c1a 40%, #1a0a0f 100%);
+    z-index:0;
+  }
+  .hero-particles { position:absolute; inset:0; z-index:1; pointer-events:none; }
+  .particle {
+    position:absolute; width:2px; height:2px; background:var(--gold);
+    border-radius:50%; opacity:0;
+    animation: float-particle linear infinite;
+  }
+  @keyframes float-particle {
+    0% { opacity:0; transform:translateY(100vh) rotate(0deg); }
+    10% { opacity:0.6; }
+    90% { opacity:0.4; }
+    100% { opacity:0; transform:translateY(-10vh) rotate(720deg); }
+  }
+  .hero-content { position:relative; z-index:2; padding: 0 7%; max-width:700px; }
+  .hero-eyebrow {
+    font-family:'Cormorant Garamond',serif; letter-spacing:6px; font-size:0.8rem;
+    color:var(--gold); text-transform:uppercase; margin-bottom:20px;
+    opacity:0; animation: slideUp 0.8s forwards 0.3s;
+  }
+  .hero-title {
+    font-family:'Playfair Display',serif; font-size: clamp(2.8rem,6vw,5.5rem);
+    font-weight:900; line-height:1.05; margin-bottom:24px;
+    opacity:0; animation: slideUp 0.8s forwards 0.5s;
+  }
+  .hero-title .gold { color:var(--gold); display:block; }
+  .hero-title .outline { -webkit-text-stroke: 1px var(--gold-dark); color: transparent; }
+  .hero-desc {
+    font-size:1.15rem; color:var(--text-muted); line-height:1.8; margin-bottom:36px; font-weight:300;
+    opacity:0; animation: slideUp 0.8s forwards 0.7s;
+  }
+  .hero-btns { display:flex; gap:16px; flex-wrap:wrap; opacity:0; animation: slideUp 0.8s forwards 0.9s; }
+  .btn-primary {
+    padding:14px 36px; background:var(--gold); color:#000;
+    font-family:'Bebas Neue',sans-serif; letter-spacing:3px; font-size:1rem;
+    border:none; cursor:none; text-decoration:none; display:inline-block;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    transition:var(--transition); position:relative; overflow:hidden;
+  }
+  .btn-primary::before {
+    content:''; position:absolute; inset:0; background:var(--gold-light); transform:translateX(-100%); transition:transform 0.4s;
+  }
+  .btn-primary:hover::before { transform:translateX(0); }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(201,168,76,0.35); }
+  .btn-primary span { position:relative; z-index:1; }
+  .btn-outline {
+    padding:13px 36px; border:1px solid var(--gold); color:var(--gold);
+    font-family:'Bebas Neue',sans-serif; letter-spacing:3px; font-size:1rem;
+    background:none; cursor:none; text-decoration:none; display:inline-block;
+    transition:var(--transition);
+  }
+  .btn-outline:hover { background:rgba(201,168,76,0.1); transform:translateY(-2px); }
+  .hero-visual { position:absolute; right:0; top:0; width:55%; height:100%; z-index:1; overflow:hidden; }
+  .hero-video-wrapper {
+    width:100%; height:100%; position:relative;
+    background: linear-gradient(to left, transparent, var(--bg) 60%), linear-gradient(135deg,#0f0a18,#1a0e0a);
+  }
+  .hero-products-float { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:12px; padding:40px; }
+  .float-item {
+    width:80px; height:100px; border:1px solid var(--border);
+    border-radius:4px; overflow:hidden; position:relative;
+    animation: floatImg 4s ease-in-out infinite; background: var(--bg3);
+  }
+  .float-item:nth-child(2){animation-delay:0.5s}
+  .float-item:nth-child(3){animation-delay:1s}
+  .float-item:nth-child(4){animation-delay:1.5s}
+  .float-item:nth-child(5){animation-delay:2s}
+  .float-item:nth-child(6){animation-delay:2.5s}
+  .float-emoji { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:2.5rem; }
+  @keyframes floatImg { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+  @keyframes slideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+  .hero-scroll {
+    position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+    z-index:3; display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:var(--text-muted); font-size:0.75rem; letter-spacing:3px; text-transform:uppercase;
+    animation: bounceDown 2s ease-in-out infinite;
+  }
+  .hero-scroll .line { width:1px; height:40px; background:linear-gradient(to bottom, var(--gold),transparent); }
+  @keyframes bounceDown { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+  .ticker { background: var(--gold); color:#000; padding:10px 0; overflow:hidden; white-space:nowrap; }
+  .ticker-inner { display:inline-flex; gap:60px; animation: ticker 22s linear infinite; font-family:'Bebas Neue',sans-serif; letter-spacing:3px; font-size:1rem; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .ticker-item::before { content:'✦ '; }
+  section { padding:100px 7%; position:relative; }
+  .section-header { text-align:center; margin-bottom:64px; }
+  .section-label { font-size:0.75rem; letter-spacing:6px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; display:block; }
+  .section-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3.5rem); font-weight:700; line-height:1.1; }
+  .section-line { width:60px; height:2px; background:var(--gold); margin:20px auto 0; position:relative; }
+  .section-line::before, .section-line::after { content:''; position:absolute; top:50%; width:6px; height:6px; background:var(--gold); border-radius:50%; transform:translateY(-50%); }
+  .section-line::before { left:-10px; }
+  .section-line::after { right:-10px; }
+  #services { background: var(--bg2); }
+  .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:28px; }
+  .product-card {
+    background: var(--card-bg); border:1px solid var(--border); border-radius:4px; overflow:hidden;
+    transition:var(--transition); cursor:none; position:relative;
+  }
+  .product-card:hover { transform:translateY(-10px); border-color:var(--gold); box-shadow:0 20px 60px rgba(201,168,76,0.15); }
+  .product-card:hover .product-overlay { opacity:1; }
+  .product-card:hover .product-img-wrap img { transform:scale(1.08); }
+  .product-img-wrap { height:280px; overflow:hidden; position:relative; background:var(--bg3); }
+  .product-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 0.6s; }
+  .product-img-emoji {
+    width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    font-size:5rem; background: linear-gradient(135deg,var(--bg3),var(--bg2));
+    animation: pulse-emoji 3s ease-in-out infinite;
+  }
+  @keyframes pulse-emoji { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+  .product-overlay {
+    position:absolute; inset:0; background:rgba(0,0,0,0.6); opacity:0;
+    transition:opacity 0.3s; display:flex; align-items:center; justify-content:center; gap:12px;
+  }
+  .overlay-btn {
+    width:44px; height:44px; border-radius:50%; background:var(--gold); color:#000;
+    border:none; cursor:none; font-size:1rem;
+    display:flex; align-items:center; justify-content:center; transition:var(--transition);
+  }
+  .overlay-btn:hover { transform:scale(1.15); background:var(--gold-light); }
+  .product-tag { position:absolute; top:14px; left:14px; background:var(--accent); color:#fff; font-family:'Bebas Neue',sans-serif; letter-spacing:2px; font-size:0.75rem; padding:3px 10px; border-radius:2px; }
+  .product-info { padding:20px; }
+  .product-category { font-size:0.72rem; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .product-name { font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:8px; }
+  .product-price { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--gold); letter-spacing:2px; }
+  .product-price .old { font-size:0.9rem; color:var(--text-muted); text-decoration:line-through; margin-right:8px; }
+  .video-section { background: var(--bg); text-align:center; padding:80px 7%; }
+  .video-container {
+    max-width:900px; margin:40px auto 0; position:relative; border-radius:4px; overflow:hidden;
+    border:1px solid var(--border); background: linear-gradient(135deg,#0f0c1a,#1a0a0f);
+    aspect-ratio:16/9; display:flex; align-items:center; justify-content:center;
+  }
+  .video-placeholder { text-align:center; z-index:2; position:relative; }
+  .video-placeholder .play-icon {
+    width:80px; height:80px; border-radius:50%; background: var(--gold); color:#000; font-size:2rem;
+    display:flex; align-items:center; justify-content:center; margin:0 auto 20px;
+    cursor:none; transition:var(--transition); animation: pulse-ring 2s ease-in-out infinite;
+  }
+  @keyframes pulse-ring { 0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0.5)} 50%{box-shadow:0 0 0 20px rgba(201,168,76,0)} }
+  .video-placeholder p { color:var(--text-muted); font-size:0.9rem; letter-spacing:2px; text-transform:uppercase; }
+  .video-bg-animation { position:absolute; inset:0; overflow:hidden; }
+  .video-ring { position:absolute; border:1px solid rgba(201,168,76,0.15); border-radius:50%; animation: expand-ring 4s ease-out infinite; }
+  @keyframes expand-ring { 0%{transform:translate(-50%,-50%) scale(0);opacity:0.8} 100%{transform:translate(-50%,-50%) scale(3);opacity:0} }
+  #testimony { background: var(--bg3); overflow:hidden; }
+  .testimony-track { display:flex; gap:24px; overflow-x:auto; padding-bottom:16px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .testimony-track::-webkit-scrollbar { display:none; }
+  .testimony-card {
+    min-width:320px; background:var(--card-bg); border:1px solid var(--border);
+    border-radius:4px; padding:32px; scroll-snap-align:start; flex-shrink:0;
+    transition:var(--transition); position:relative;
+  }
+  .testimony-card::before { content:'"'; font-family:'Playfair Display',serif; font-size:5rem; color:var(--gold); opacity:0.2; position:absolute; top:-10px; left:20px; line-height:1; }
+  .testimony-card:hover { border-color:var(--gold); transform:translateY(-4px); }
+  .stars { color:var(--gold); font-size:0.9rem; margin-bottom:16px; letter-spacing:2px; }
+  .testimony-text { font-size:1.05rem; line-height:1.7; color:var(--text-muted); margin-bottom:24px; font-style:italic; }
+  .testimony-author { display:flex; align-items:center; gap:14px; }
+  .author-avatar { width:46px; height:46px; border-radius:50%; background: linear-gradient(135deg,var(--gold-dark),var(--gold)); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-weight:700; color:#000; font-size:1.1rem; }
+  .author-name { font-weight:600; font-size:1rem; }
+  .author-loc { font-size:0.8rem; color:var(--text-muted); letter-spacing:1px; }
+  .testimony-nav { display:flex; justify-content:center; gap:10px; margin-top:32px; }
+  .testi-dot { width:8px; height:8px; border-radius:50%; background:var(--border); cursor:none; transition:var(--transition); border:none; }
+  .testi-dot.active { background:var(--gold); width:24px; border-radius:4px; }
+  #contact { background: var(--bg2); }
+  .contact-grid { display:grid; grid-template-columns:1fr 1.2fr; gap:60px; align-items:start; }
+  .contact-info h3 { font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:24px; }
+  .contact-item { display:flex; align-items:flex-start; gap:16px; margin-bottom:28px; padding:20px; border:1px solid var(--border); border-radius:4px; background:var(--card-bg); transition:var(--transition); }
+  .contact-item:hover { border-color:var(--gold); transform:translateX(4px); }
+  .contact-icon { width:44px; height:44px; border-radius:4px; background:rgba(201,168,76,0.1); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:1.1rem; flex-shrink:0; }
+  .contact-label { font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
+  .contact-val { font-size:1.05rem; }
+  .contact-val a { color:var(--text); text-decoration:none; transition:color 0.3s; }
+  .contact-val a:hover { color:var(--gold); }
+  .whatsapp-btn { display:inline-flex; align-items:center; gap:8px; background:#25D366; color:#fff; padding:10px 20px; border-radius:3px; text-decoration:none; font-family:'Bebas Neue',sans-serif; letter-spacing:2px; font-size:0.95rem; transition:var(--transition); margin-top:6px; cursor:none; }
+  .whatsapp-btn:hover { background:#1ebe5a; transform:scale(1.04); box-shadow:0 6px 20px rgba(37,211,102,0.3); }
+  .social-links { display:flex; gap:12px; margin-top:28px; }
+  .social-btn { width:44px; height:44px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-muted); text-decoration:none; font-size:1rem; transition:var(--transition); cursor:none; }
+  .social-btn:hover { border-color:var(--gold); color:var(--gold); transform:scale(1.1) rotate(10deg); background:rgba(201,168,76,0.08); }
+  .social-btn.tiktok:hover { color:#69C9D0; border-color:#69C9D0; }
+  .social-btn.instagram:hover { color:#E1306C; border-color:#E1306C; }
+  .social-btn.facebook:hover { color:#1877F2; border-color:#1877F2; }
+  .contact-form { background:var(--card-bg); border:1px solid var(--border); border-radius:4px; padding:40px; }
+  .contact-form h3 { font-family:'Playfair Display',serif; font-size:1.5rem; margin-bottom:28px; }
+  .form-group { margin-bottom:20px; }
+  .form-group label { display:block; font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .form-group input, .form-group textarea, .form-group select { width:100%; background: var(--bg); border:1px solid var(--border); color:var(--text); padding:13px 16px; border-radius:2px; font-family:'Cormorant Garamond',serif; font-size:1rem; transition:border-color 0.3s; outline:none; cursor:none; }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--gold); }
+  .form-group textarea { height:110px; resize:vertical; }
+  .form-group select option { background:var(--bg2); }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .btn-submit { width:100%; padding:14px; background:var(--gold); color:#000; border:none; font-family:'Bebas Neue',sans-serif; letter-spacing:4px; font-size:1.1rem; cursor:none; transition:var(--transition); clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px)); }
+  .btn-submit:hover { background:var(--gold-light); transform:translateY(-2px); box-shadow:0 10px 30px rgba(201,168,76,0.3); }
+  .form-success { display:none; text-align:center; padding:30px; color:var(--gold); font-family:'Playfair Display',serif; font-size:1.3rem; }
+  .form-success .check { font-size:3rem; display:block; margin-bottom:12px; }
+  #payment { background:var(--bg); }
+  .payment-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px; }
+  .payment-card { background:var(--card-bg); border:1px solid var(--border); border-radius:4px; padding:28px 24px; text-align:center; transition:var(--transition); }
+  .payment-card:hover { border-color:var(--gold); transform:translateY(-6px); box-shadow:var(--shadow); }
+  .payment-icon { font-size:2.8rem; margin-bottom:14px; display:block; }
+  .payment-name { font-family:'Bebas Neue',sans-serif; letter-spacing:3px; font-size:1.1rem; color:var(--gold); margin-bottom:6px; }
+  .payment-detail { font-size:0.9rem; color:var(--text-muted); line-height:1.5; }
+  .payment-detail strong { color:var(--text); display:block; margin-top:4px; }
+  #privacy { background:var(--bg2); }
+  .privacy-content { max-width:800px; margin:0 auto; background:var(--card-bg); border:1px solid var(--border); border-radius:4px; padding:48px; }
+  .privacy-content h3 { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--gold); margin:28px 0 12px; }
+  .privacy-content p { color:var(--text-muted); line-height:1.8; font-size:1rem; }
+  .privacy-content ul { color:var(--text-muted); line-height:1.9; padding-left:20px; }
+  footer { background: #050508; border-top:1px solid var(--border); padding:60px 7% 30px; text-align:center; }
+  .footer-logo { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:5px; color:var(--gold); margin-bottom:8px; }
+  .footer-tagline { color:var(--text-muted); font-size:0.85rem; letter-spacing:2px; margin-bottom:32px; }
+  .footer-socials { display:flex; justify-content:center; gap:14px; margin-bottom:32px; }
+  .footer-links { display:flex; justify-content:center; gap:32px; flex-wrap:wrap; margin-bottom:28px; }
+  .footer-links a { color:var(--text-muted); text-decoration:none; font-size:0.85rem; letter-spacing:2px; text-transform:uppercase; transition:color 0.3s; }
+  .footer-links a:hover { color:var(--gold); }
+  .footer-divider { width:100%; height:1px; background:var(--border); margin:28px 0; }
+  .footer-bottom { color:var(--text-muted); font-size:0.8rem; letter-spacing:1px; }
+  .footer-bottom .made-by { color:var(--gold); font-style:italic; margin-top:6px; display:block; font-size:0.85rem; }
+  .dots-nav { position:fixed; right:28px; top:50%; transform:translateY(-50%); z-index:500; display:flex; flex-direction:column; gap:10px; }
+  .dot-nav { width:8px; height:8px; border-radius:50%; background:var(--border); cursor:none; transition:var(--transition); border:none; position:relative; }
+  .dot-nav.active { background:var(--gold); transform:scale(1.3); }
+  .dot-nav:hover { background:var(--gold); }
+  .dot-nav::after { content:attr(data-label); position:absolute; right:18px; top:50%; transform:translateY(-50%); background:var(--bg2); color:var(--gold); padding:3px 10px; border-radius:2px; white-space:nowrap; font-size:0.7rem; letter-spacing:2px; text-transform:uppercase; opacity:0; pointer-events:none; transition:opacity 0.2s; border:1px solid var(--border); }
+  .dot-nav:hover::after { opacity:1; }
+  .wa-float { position:fixed; bottom:28px; right:28px; z-index:800; width:56px; height:56px; border-radius:50%; background:#25D366; color:#fff; font-size:1.5rem; display:flex; align-items:center; justify-content:center; text-decoration:none; box-shadow:0 4px 20px rgba(37,211,102,0.4); animation: wa-pulse 2.5s ease-in-out infinite; cursor:none; transition:var(--transition); }
+  .wa-float:hover { transform:scale(1.12); box-shadow:0 8px 32px rgba(37,211,102,0.5); }
+  @keyframes wa-pulse { 0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.4),0 0 0 0 rgba(37,211,102,0.3)} 50%{box-shadow:0 4px 20px rgba(37,211,102,0.4),0 0 0 12px rgba(37,211,102,0)} }
+  .reveal { opacity:0; transform:translateY(40px); transition: opacity 0.7s, transform 0.7s; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:900px) {
+    .hero-visual { display:none; }
+    .contact-grid { grid-template-columns:1fr; }
+    .form-row { grid-template-columns:1fr; }
+    .nav-links { display:none; }
+    .hamburger { display:flex; }
+    .mobile-menu { position:fixed; inset:0; background:var(--bg); z-index:900; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:36px; transform:translateX(100%); transition:transform 0.5s cubic-bezier(0.23,1,0.32,1); }
+    .mobile-menu.open { transform:translateX(0); }
+    .mobile-menu a { color:var(--text); text-decoration:none; font-family:'Playfair Display',serif; font-size:2rem; }
+    .mobile-menu a:hover { color:var(--gold); }
+    .mobile-close { position:absolute; top:24px; right:24px; background:none; border:none; color:var(--gold); font-size:1.8rem; cursor:none; }
+    section { padding:70px 5%; }
+    .dots-nav { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follow" id="cursorFollow"></div>
+<div class="dots-nav">
+  <button class="dot-nav active" data-label="Home" onclick="scrollTo(0,0)"></button>
+  <button class="dot-nav" data-label="Services" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})"></button>
+  <button class="dot-nav" data-label="Video" onclick="document.getElementById('video').scrollIntoView({behavior:'smooth'})"></button>
+  <button class="dot-nav" data-label="Testimony" onclick="document.getElementById('testimony').scrollIntoView({behavior:'smooth'})"></button>
+  <button class="dot-nav" data-label="Contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})"></button>
+  <button class="dot-nav" data-label="Privacy" onclick="document.getElementById('privacy').scrollIntoView({behavior:'smooth'})"></button>
+</div>
+<a href="https://wa.me/255787504216" target="_blank" class="wa-float" title="WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="document.getElementById('mobileMenu').classList.remove('open')"><i class="fas fa-times"></i></button>
+  <a href="#home" onclick="document.getElementById('mobileMenu').classList.remove('open')">Home</a>
+  <a href="#services" onclick="document.getElementById('mobileMenu').classList.remove('open')">Services</a>
+  <a href="#testimony" onclick="document.getElementById('mobileMenu').classList.remove('open')">Testimony</a>
+  <a href="#contact" onclick="document.getElementById('mobileMenu').classList.remove('open')">Contact</a>
+  <a href="#privacy" onclick="document.getElementById('mobileMenu').classList.remove('open')">Privacy</a>
+</div>
+<nav id="navbar">
+  <a href="#home" class="nav-logo">🌍 MIC <span>International</span></a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#testimony">Testimony</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#privacy">Privacy</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-moon"></i></button>
+    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.add('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="ticker" style="margin-top:70px;">
+  <div class="ticker-inner">
+    <span class="ticker-item">NGUO ZA KISASA</span>
+    <span class="ticker-item">MIKUFU YA DHAHABU</span>
+    <span class="ticker-item">SAA ZA LUXURY</span>
+    <span class="ticker-item">VIATU VYA UBORA</span>
+    <span class="ticker-item">SUTI ZA KIFAHARI</span>
+    <span class="ticker-item">KOFIA ZA MITINDO</span>
+    <span class="ticker-item">VIPODOZI VYA HALI</span>
+    <span class="ticker-item">NGUO ZA KISASA</span>
+    <span class="ticker-item">MIKUFU YA DHAHABU</span>
+    <span class="ticker-item">SAA ZA LUXURY</span>
+    <span class="ticker-item">VIATU VYA UBORA</span>
+    <span class="ticker-item">SUTI ZA KIFAHARI</span>
+    <span class="ticker-item">KOFIA ZA MITINDO</span>
+    <span class="ticker-item">VIPODOZI VYA HALI</span>
+  </div>
+</div>
+<section id="home" class="hero" style="padding-top:0; min-height:calc(100vh - 70px);">
+  <div class="hero-bg"></div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">✦ Luxury Fashion & Beauty ✦</p>
+    <h1 class="hero-title">
+      <span>MWOMBEKI</span>
+      <span class="gold">INTERNATIONAL</span>
+      <span class="outline">COMPANY</span>
+    </h1>
+    <p class="hero-desc">Bidhaa za hali ya juu — nguo, vipodozi, mikufu, saa, viatu na suti za kisasa. Ubora unaobadilisha mtindo wako.</p>
+    <div class="hero-btns">
+      <a href="#services" class="btn-primary"><span>Tazama Bidhaa</span></a>
+      <a href="#contact" class="btn-outline">Wasiliana Nasi</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-video-wrapper">
+      <div class="hero-products-float">
+        <div class="float-item"><div class="float-emoji">👗</div></div>
+        <div class="float-item"><div class="float-emoji">📿</div></div>
+        <div class="float-item"><div class="float-emoji">⌚</div></div>
+        <div class="float-item"><div class="float-emoji">👠</div></div>
+        <div class="float-item"><div class="float-emoji">🤵</div></div>
+        <div class="float-item"><div class="float-emoji">🧢</div></div>
+        <div class="float-item"><div class="float-emoji">💄</div></div>
+        <div class="float-item"><div class="float-emoji">💍</div></div>
+        <div class="float-item"><div class="float-emoji">👒</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+<section id="services">
+  <div class="section-header reveal">
+    <span class="section-label">Bidhaa Zetu</span>
+    <h2 class="section-title">Mkusanyiko wa Kisasa</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="products-grid">
+    <div class="product-card reveal">
+      <div class="product-img-wrap">
+        <div class="product-img-emoji">👗</div>
+        <div class="product-tag">Mpya</div>
+        <div class="product-overlay">
+          <button class="overlay-btn"><i class="fas fa-eye"></i></button>
+          <a href="https://wa.me/255787504216?text=Nataka%20kuagiza%20Nguo%20ya%20Kisasa" class="overlay-btn" style="text-decoration:none"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Mavazi</p>
+        <h3 class="product-name">Nguo za Designer</h3>
+        <p class="product-price"><span class="old">TSH 85,000</span>TSH 65,000</p>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-img-wrap">
+        <div class="product-img-emoji">📿</div>
+        <div class="product-overlay">
+          <button class="overlay-btn"><i class="fas fa-eye"></i></button>
+          <a href="https://wa.me/255787504216?text=Nataka%20kuagiza%20Mkufu" class="overlay-btn" style="text-decoration:none"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Mapambo</p>
+        <h3 class="product-name">Mikufu ya Dhahabu</h3>
+        <p class="product-price">TSH 120,000</p>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-img-wrap">
+        <div class="product-img-emoji">⌚</div>
+        <div class="product-tag">Hot</div>
+        <div class="product-overlay">
+          <button class="overlay-btn"><i class="fas fa-eye"></i></button>
+          <a href="https://wa.me/255787504216?text=Nataka%20kuagiza%20Saa%20ya%20Luxury" class="overlay-btn" style="text-decoration:none"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Saa</p>
+        <h3 class="product-name">Saa za Luxury</h3>
+        <p class="product-price"><span class="old">TSH 200,000</span>TSH 150,000</p>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-img-wrap">
+        <div class="product-img-emoji">👠</div>
+        <div class="product-overlay">
+          <button class="overlay-btn"><i class="fas fa-eye"></i></button>
+          <a href="https://wa.me/255787504216?text=Nataka%20kuagiza%20Viatu" class="overlay-btn" style="text-decoration:none"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Viatu</p>
+        <h3 class="product-name">Viatu vya Ubora</h3>
+        <p class="product-price">TSH 95,000</p>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-img-wrap">
+        <div class="product-img-emoji">🤵</div>
+        <div class="product-tag">VIP</div>
+        <div class="product-overlay">
+          <button class="overlay-btn"><i class="fas fa-eye"></i></button>
+          <a href="https://wa.me/255787504216?text=Nataka%20kuagiza%20Suti%20ya%20Kifahari" class="overlay-btn" style="text-decoration:none"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Suti</p>
+        <h3 class="product-name">Suti za Kifahari</h3>
+        <p class="product-price"><span class="old">TSH 380,000</span>TSH 280,000</p>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-img-wrap">
+        <div class="product-img-emoji">🧢</div>
+        <div class="product-overlay">
+          <button class="overlay-btn"><i class="fas fa-eye"></i></button>
+          <a href="https://wa.me/255787504216?text=Nataka%20kuagiza%20Kofia" class="overlay-btn" style="text-decoration:none"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Kofia</p>
+        <h3 class="product-name">Kofia za Mitindo</h3>
+        <p class="product-price">TSH 45,000</p>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-img-wrap">
+        <div class="product-img-emoji">💄</div>
+        <div class="product-tag">Bora</div>
+        <div class="product-overlay">
+          <button class="overlay-btn"><i class="fas fa-eye"></i></button>
+          <a href="https://wa.me/255787504216?text=Nataka%20kuagiza%20Vipodozi" class="overlay-btn" style="text-decoration:none"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Vipodozi</p>
+        <h3 class="product-name">Vipodozi vya Hali</h3>
+        <p class="product-price">TSH 55,000</p>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-img-wrap">
+        <div class="product-img-emoji">💍</div>
+        <div class="product-overlay">
+          <button class="overlay-btn"><i class="fas fa-eye"></i></button>
+          <a href="https://wa.me/255787504216?text=Nataka%20kuagiza%20Pete" class="overlay-btn" style="text-decoration:none"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Mapambo</p>
+        <h3 class="product-name">Pete za Dhahabu</h3>
+        <p class="product-price">TSH 80,000</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="video" class="video-section">
+  <div class="section-header reveal">
+    <span class="section-label">Angalia Zaidi</span>
+    <h2 class="section-title">Video ya Bidhaa Zetu</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="video-container reveal">
+    <div class="video-bg-animation">
+      <div class="video-ring" style="width:200px;height:200px;top:50%;left:50%;animation-delay:0s"></div>
+      <div class="video-ring" style="width:200px;height:200px;top:50%;left:50%;animation-delay:1.3s"></div>
+      <div class="video-ring" style="width:200px;height:200px;top:50%;left:50%;animation-delay:2.6s"></div>
+    </div>
+    <div class="video-placeholder">
+      <a href="https://www.tiktok.com/@pythojus" target="_blank" style="text-decoration:none">
+        <div class="play-icon"><i class="fas fa-play"></i></div>
+      </a>
+      <p>Tazama Bidhaa kwenye TikTok — @pythojus</p>
+      <div style="display:flex;gap:14px;justify-content:center;margin-top:20px;flex-wrap:wrap;">
+        <a href="https://www.tiktok.com/@pythojus" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:#010101;color:#fff;border-radius:3px;text-decoration:none;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:0.9rem;border:1px solid #69C9D0">
+          <i class="fab fa-tiktok" style="color:#69C9D0"></i> TikTok: @pythojus
+        </a>
+        <a href="https://www.instagram.com/florianmwombeki" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;border-radius:3px;text-decoration:none;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:0.9rem">
+          <i class="fab fa-instagram"></i> Instagram: @Florian mwombeki
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="testimony">
+  <div class="section-header reveal">
+    <span class="section-label">Wateja Wetu</span>
+    <h2 class="section-title">Wanachosema Wateja</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="testimony-track" id="testiTrack">
+    <div class="testimony-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimony-text">Bidhaa za Mwombeki International ni za hali ya juu sana! Nilinunua suti na ilikuwa nzuri kabisa. Delivery ilikuwa ya haraka na packaging ilikuwa nzuri.</p>
+      <div class="testimony-author">
+        <div class="author-avatar">AM</div>
+        <div><div class="author-name">Amina Mbeki</div><div class="author-loc">Dar es Salaam</div></div>
+      </div>
+    </div>
+    <div class="testimony-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimony-text">Nilinunua vipodozi na nguo kwa wakati mmoja. Ubora ni wa juu sana, bei ni nzuri, na huduma ya wateja ni bora. Nitanunua tena hakika!</p>
+      <div class="testimony-author">
+        <div class="author-avatar">JK</div>
+        <div><div class="author-name">John Kasiga</div><div class="author-loc">Mwanza</div></div>
+      </div>
+    </div>
+    <div class="testimony-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimony-text">Saa niliyonunua ni ya kupendeza sana! Nimetembelea maduka mengi lakini MIC wana ubora wa kipekee. Asante Florian kwa huduma nzuri.</p>
+      <div class="testimony-author">
+        <div class="author-avatar">FN</div>
+        <div><div class="author-name">Fatuma Ndege</div><div class="author-loc">Arusha</div></div>
+      </div>
+    </div>
+    <div class="testimony-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimony-text">Kofia niliyonunua ilikuwa tofauti kabisa na niliyotegemea — ni bora zaidi! Biashara hii inastahili kupongezwa. Highly recommended.</p>
+      <div class="testimony-author">
+        <div class="author-avatar">PL</div>
+        <div><div class="author-name">Peter Lema</div><div class="author-loc">Dodoma</div></div>
+      </div>
+    </div>
+    <div class="testimony-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimony-text">Nimekuwa mteja wa MIC kwa miaka miwili sasa. Kamwe sijawahi kupata bidhaa mbaya. Wanapofikia standard ya juu kila wakati. Asanteni sana!</p>
+      <div class="testimony-author">
+        <div class="author-avatar">RB</div>
+        <div><div class="author-name">Rose Baraka</div><div class="author-loc">Zanzibar</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="testimony-nav" id="testiNav">
+    <button class="testi-dot active"></button>
+    <button class="testi-dot"></button>
+    <button class="testi-dot"></button>
+    <button class="testi-dot"></button>
+    <button class="testi-dot"></button>
+  </div>
+</section>
+<section id="contact">
+  <div class="section-header reveal">
+    <span class="section-label">Mawasiliano</span>
+    <h2 class="section-title">Wasiliana Nasi</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-grid">
+    <div>
+      <div class="contact-info reveal">
+        <h3>Tutajibu Haraka! 🌟</h3>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+          <div>
+            <div class="contact-label">WhatsApp</div>
+            <div class="contact-val">
+              <a href="https://wa.me/255787504216" target="_blank">+255 787 504 216</a><br>
+              <a href="https://wa.me/255765417146" target="_blank">+255 765 417 146</a><br>
+              <a href="https://wa.me/255787504216" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Chat Sasa (Namba 1)</a>
+              <a href="https://wa.me/255765417146" target="_blank" class="whatsapp-btn" style="margin-left:8px"><i class="fab fa-whatsapp"></i> Chat Sasa (Namba 2)</a>
+            </div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fab fa-tiktok"></i></div>
+          <div>
+            <div class="contact-label">TikTok</div>
+            <div class="contact-val"><a href="https://www.tiktok.com/@pythojus" target="_blank">@pythojus</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fab fa-instagram"></i></div>
+          <div>
+            <div class="contact-label">Instagram</div>
+            <div class="contact-val"><a href="https://www.instagram.com/florianmwombeki" target="_blank">@Florian mwombeki</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fab fa-facebook"></i></div>
+          <div>
+            <div class="contact-label">Facebook</div>
+            <div class="contact-val"><a href="https://www.facebook.com/search/top?q=florian+mwombeki" target="_blank">Florian Mwombeki</a></div>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="https://wa.me/255787504216" class="social-btn" target="_blank"><i class="fab fa-whatsapp" style="color:#25D366"></i></a>
+          <a href="https://www.tiktok.com/@pythojus" class="social-btn tiktok" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.instagram.com/florianmwombeki" class="social-btn instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.facebook.com/search/top?q=florian+mwombeki" class="social-btn facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal">
+      <h3>Tuma Ujumbe Wako ✉️</h3>
+      <div id="formContent">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Jina Lako *</label>
+            <input type="text" id="clientName" placeholder="Andika jina lako hapa...">
+          </div>
+          <div class="form-group">
+            <label>Upo Wapi? (Location) *</label>
+            <input type="text" id="clientLocation" placeholder="Mji, Mkoa...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Unataka Nini? *</label>
+          <select id="clientWant">
+            <option value="">-- Chagua Bidhaa --</option>
+            <option>Nguo za Kisasa</option>
+            <option>Mkufu / Pete / Mapambo</option>
+            <option>Saa za Luxury</option>
+            <option>Viatu vya Ubora</option>
+            <option>Suti za Kifahari</option>
+            <option>Kofia za Mitindo</option>
+            <option>Vipodozi vya Hali</option>
+            <option>Bidhaa Nyingine</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Maelezo / Ujumbe Zaidi</label>
+          <textarea id="clientMsg" placeholder="Andika maelezo zaidi kuhusu bidhaa unayotaka, saizi, rangi, n.k..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Namba ya Simu / Email</label>
+          <input type="text" id="clientContact" placeholder="+255 ... au email yako...">
+        </div>
+        <button class="btn-submit" onclick="sendOrder()">✦ TUMA AGIZO SASA ✦</button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <span class="check">✅</span>
+        Asante! Ujumbe wako umetumwa kwa WhatsApp. Tutajibu hivi karibuni!
+      </div>
+    </div>
+  </div>
+</section>
+<section id="payment">
+  <div class="section-header reveal">
+    <span class="section-label">Malipo</span>
+    <h2 class="section-title">Njia za Malipo</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="payment-grid">
+    <div class="payment-card reveal">
+      <span class="payment-icon">💳</span>
+      <div class="payment-name">PayPal</div>
+      <div class="payment-detail">Lipa kwa PayPal kwa usalama<strong>Wasiliana nasi kupata akaunti</strong></div>
+    </div>
+    <div class="payment-card reveal">
+      <span class="payment-icon">🌐</span>
+      <div class="payment-name">Payoneer</div>
+      <div class="payment-detail">Malipo ya kimataifa<strong>Wasiliana nasi kupata details</strong></div>
+    </div>
+    <div class="payment-card reveal">
+      <span class="payment-icon">📱</span>
+      <div class="payment-name">M-Pesa / Mobile</div>
+      <div class="payment-detail">Namba ya Malipo<strong>+255 787 504 216</strong><strong>+255 765 417 146</strong></div>
+    </div>
+    <div class="payment-card reveal">
+      <span class="payment-icon">🏦</span>
+      <div class="payment-name">CRDB Bank</div>
+      <div class="payment-detail">Akaunti Namba<strong>0152942505500</strong>Florian Mwombeki Felisian</div>
+    </div>
+    <div class="payment-card reveal">
+      <span class="payment-icon">🏛️</span>
+      <div class="payment-name">NMB Bank</div>
+      <div class="payment-detail">Akaunti Namba<strong>32010047257</strong>Florian Mwombeki Felisian</div>
+    </div>
+  </div>
+</section>
+<section id="privacy">
+  <div class="section-header reveal">
+    <span class="section-label">Sera</span>
+    <h2 class="section-title">Sera ya Faragha</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="privacy-content reveal">
+    <p>MWOMBEKI INTERNATIONAL COMPANY inajali faragha ya wateja wake. Tafadhali soma sera hii ya faragha kwa makini.</p>
+    <h3>1. Taarifa Tunazokusanya</h3>
+    <p>Tunakusanya taarifa unazotoa mwenyewe kama jina, namba ya simu, mahali ulipo, na aina ya bidhaa unayotaka. Taarifa hizi zinatumika tu kwa madhumuni ya kutoa huduma bora.</p>
+    <h3>2. Jinsi Tunavyotumia Taarifa</h3>
+    <ul>
+      <li>Kuthibitisha na kukamilisha maagizo yako</li>
+      <li>Kukutumia taarifa za bidhaa mpya na matoleo maalum</li>
+      <li>Kuboresha huduma zetu kwako</li>
+      <li>Kujibu maswali yako kwa haraka</li>
+    </ul>
+    <h3>3. Usalama wa Taarifa</h3>
+    <p>Taarifa zako ziko salama. Hatuzitangazi wala kuziuza kwa watu wengine. Tunatumia teknolojia ya kisasa kulinda taarifa zako dhidi ya ufikiaji usioidhinishwa.</p>
+    <h3>4. Malipo</h3>
+    <p>Malipo yote yanafanyika kupitia njia salama. Taarifa za benki zinakuwa siri na hazishirikiwa na mtu yeyote nje ya muamala wako.</p>
+    <h3>5. Haki Zako</h3>
+    <p>Una haki ya kuomba kufutwa kwa taarifa zako wakati wowote. Wasiliana nasi kupitia WhatsApp au barua pepe kwa maombi yoyote.</p>
+    <h3>6. Mawasiliano</h3>
+    <p>Kwa maswali yoyote kuhusu sera hii, wasiliana nasi:<br>
+    📱 WhatsApp: +255 787 504 216 | +255 765 417 146<br>
+    📍 MWOMBEKI INTERNATIONAL COMPANY</p>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo">🌍 MWOMBEKI INTERNATIONAL COMPANY</div>
+  <p class="footer-tagline">Ubora wa Kipekee • Mitindo ya Kisasa • Huduma Bora</p>
+  <div class="footer-socials">
+    <a href="https://wa.me/255787504216" class="social-btn" target="_blank"><i class="fab fa-whatsapp" style="color:#25D366"></i></a>
+    <a href="https://www.tiktok.com/@pythojus" class="social-btn tiktok" target="_blank"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.instagram.com/florianmwombeki" class="social-btn instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com/search/top?q=florian+mwombeki" class="social-btn facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+  </div>
+  <div class="footer-links">
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+    <a href="#testimony">Testimony</a>
+    <a href="#contact">Contact</a>
+    <a href="#payment">Malipo</a>
+    <a href="#privacy">Privacy</a>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    © 2025 MWOMBEKI INTERNATIONAL COMPANY. Haki Zote Zimehifadhiwa.
+    <span class="made-by">✦ Made by Florian Mwombeki Felisian ✦</span>
+  </div>
+</footer>
+<script>
+const cursor=document.getElementById('cursor');
+const cursorFollow=document.getElementById('cursorFollow');
+let mx=0,my=0,fx=0,fy=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+});
+function animateFollow(){
+  fx+=(mx-fx)*0.12;fy+=(my-fy)*0.12;
+  cursorFollow.style.left=fx+'px';cursorFollow.style.top=fy+'px';
+  requestAnimationFrame(animateFollow);
+}
+animateFollow();
+document.querySelectorAll('a,button,.product-card,.payment-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';cursorFollow.style.width='54px';cursorFollow.style.height='54px';});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';cursorFollow.style.width='36px';cursorFollow.style.height='36px';});
+});
+const pContainer=document.getElementById('particles');
+for(let i=0;i<30;i++){
+  const p=document.createElement('div');p.className='particle';
+  p.style.cssText=`left:${Math.random()*100}%;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation-duration:${Math.random()*10+8}s;animation-delay:${Math.random()*8}s;opacity:0;`;
+  pContainer.appendChild(p);
+}
+const themeBtn=document.getElementById('themeToggle');
+const html=document.documentElement;
+themeBtn.addEventListener('click',()=>{
+  const isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'light':'dark');
+  themeBtn.innerHTML=isDark?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';
+});
+const reveals=document.querySelectorAll('.reveal');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);}});
+},{threshold:0.1});
+reveals.forEach(r=>observer.observe(r));
+const dots=document.querySelectorAll('.dot-nav');
+window.addEventListener('scroll',()=>{
+  let current='';
+  document.querySelectorAll('section').forEach(s=>{if(window.scrollY>=s.offsetTop-200)current=s.id;});
+  dots.forEach(d=>{d.classList.remove('active');if(d.getAttribute('data-label').toLowerCase()===current)d.classList.add('active');});
+  document.getElementById('navbar').style.boxShadow=window.scrollY>50?'0 4px 30px rgba(0,0,0,0.5)':'none';
+});
+const track=document.getElementById('testiTrack');
+const dotsT=document.querySelectorAll('.testi-dot');
+let tIdx=0;
+function scrollTesti(idx){
+  track.scrollTo({left:idx*344,behavior:'smooth'});
+  dotsT.forEach(d=>d.classList.remove('active'));
+  dotsT[idx].classList.add('active');tIdx=idx;
+}
+dotsT.forEach((d,i)=>d.addEventListener('click',()=>scrollTesti(i)));
+setInterval(()=>scrollTesti((tIdx+1)%5),4000);
+function sendOrder(){
+  const name=document.getElementById('clientName').value.trim();
+  const loc=document.getElementById('clientLocation').value.trim();
+  const want=document.getElementById('clientWant').value;
+  const msg=document.getElementById('clientMsg').value.trim();
+  const contact=document.getElementById('clientContact').value.trim();
+  if(!name||!loc||!want){alert('Tafadhali jaza sehemu zote zilizo na *');return;}
+  const text=`🛍️ *AGIZO JIPYA - MWOMBEKI INTERNATIONAL*\n\n👤 *Jina:* ${name}\n📍 *Location:* ${loc}\n🛒 *Anataka:* ${want}\n💬 *Maelezo:* ${msg||'Hakuna maelezo zaidi'}\n📞 *Mawasiliano:* ${contact||'Haijatolewa'}\n\n✦ Tumwa kupitia Website ya MIC`;
+  window.open('https://wa.me/255787504216?text='+encodeURIComponent(text),'_blank');
+  document.getElementById('formContent').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+}
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const target=document.getElementById(a.getAttribute('href').slice(1));
+    if(target)target.scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
